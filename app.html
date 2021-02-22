@@ -13,11 +13,14 @@
     <main>
         <h1>Green vs. Red</h1>
         <section>
+            <form>
             <label for="width">Width: </label>
-            <input type="number" name="width" id="width">
+            <input type="number" name="width" id="width" min="3" max="21">
             <label for="height">Height: </label>
-            <input type="number" name="height" id="height">
-            <button id="btnCalculate">Calculate</button>
+            <input type="number" name="height" id="height" min="3" max="21">
+            <button id="btnStart" type="button">Start</button>
+            <button id="btnStop" type="button">Stop</button>
+            </form>
         </section>
         <section id="grid">
             
