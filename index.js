@@ -1,8 +1,8 @@
 let x = 5;
 let y = 5;
 let grid = [];
-const type = ["CTL", "CTR", "CBL", "CBR", "SL", "SR", "SB", "ST", "INSIDE"];
-const coordinates = ["--", "-0", "-+", "0-", "0+", "+-", "+0", "++"];
+const type = ['CTL', 'CTR', 'CBL', 'CBR', 'SL', 'SR', 'SB', 'ST', 'INSIDE'];
+const coordinates = ['--', '-0', '-+', '0-', '0+', '+-', '+0', '++'];
 
 class Cell {
     constructor(status, x, y, gridMaxX, gridMaxY) {
@@ -10,62 +10,62 @@ class Cell {
         this.row = x;
         this.col = y;
         this.setType(gridMaxX - 1, gridMaxY - 1);
-        this.neightCoord = this.neigthboors();
+        this.neighborsCoord = this.neighbors();
     }
 
     setType(gridMX, gridMY) {
-        const ctl = "467";
-        const ctr = "356";
-        const cbl = "124";
-        const cbr = "013";
+        const ctl = '467';
+        const ctr = '356';
+        const cbl = '124';
+        const cbr = '013';
 
         if (this.row === 0 && this.col === 0) {
             this.type = type[0];
-            this.neigthboorsCode = ctl;
+            this.neighborsCode = ctl;
         } else if (this.row === 0 && this.col === gridMY) {
             this.type = type[1];
-            this.neigthboorsCode = ctr;
+            this.neighborsCode = ctr;
         } else if (this.row === gridMX && this.col === 0) {
             this.type = type[2];
-            this.neigthboorsCode = cbl;
+            this.neighborsCode = cbl;
         } else if (this.row === gridMX && this.col === gridMY) {
             this.type = type[3];
-            this.neigthboorsCode = cbr;
+            this.neighborsCode = cbr;
         } else if (this.row < gridMX && this.row > 0 && this.col === 0) {
             this.type = type[4];
-            this.neigthboorsCode = cbl + "67";
+            this.neighborsCode = cbl + '67';
         } else if (this.row < gridMX && this.row > 0 && this.col === gridMY) {
             this.type = type[5];
-            this.neigthboorsCode = cbr + "56";
+            this.neighborsCode = cbr + '56';
         } else if (this.row === gridMX && this.col < gridMY && this.col > 0) {
             this.type = type[6];
-            this.neigthboorsCode = cbr + "24";
+            this.neighborsCode = cbr + '24';
         } else if (this.row === 0 && this.col < gridMY && this.col > 0) {
             this.type = type[7];
-            this.neigthboorsCode = ctr + "47";
+            this.neighborsCode = ctr + '47';
         } else {
             this.type = type[8];
-            this.neigthboorsCode = "all";
+            this.neighborsCode = 'all';
         }
     }
 
-    neigthboors() {
-        let neightCoord = [];
+    neighbors() {
+        let neighborsCoord = [];
 
-        if (this.neigthboorsCode === "all") {
+        if (this.neighborsCode === 'all') {
             for (let i = 0; i < coordinates.length; i++) {
-                neightCoord.push(this.coordinatesDecode(coordinates[i]));
+                neighborsCoord.push(this.coordinatesDecode(coordinates[i]));
             }
         } else {
-            for (let i = 0; i < this.neigthboorsCode.length; i++) {
-                const element = this.neigthboorsCode[i];
-                neightCoord.push(
+            for (let i = 0; i < this.neighborsCode.length; i++) {
+                const element = this.neighborsCode[i];
+                neighborsCoord.push(
                     this.coordinatesDecode(coordinates[parseInt(element)])
                 );
             }
         }
 
-        return neightCoord;
+        return neighborsCoord;
     }
 
     coordinatesDecode(code) {
@@ -74,9 +74,9 @@ class Cell {
 
         for (let i = 0; i < code.length; i++) {
             const element = code[i];
-            if (element === "-") {
+            if (element === '-') {
                 i === 0 ? (forX = this.row - 1) : (forY = this.col - 1);
-            } else if (element === "+") {
+            } else if (element === '+') {
                 i === 0 ? (forX = this.row + 1) : (forY = this.col + 1);
             }
         }
@@ -87,10 +87,10 @@ class Cell {
 
 let timer;
 
-const start = document.getElementById("btnStart");
+const start = document.getElementById('btnStart');
 start.onclick = () => {
-    y = document.getElementById("width").value;
-    x = document.getElementById("height").value;
+    y = document.getElementById('width').value;
+    x = document.getElementById('height').value;
 
     if (x >= 3 && x <= 21 && y >= 3 && y <= 21) {
         fillArray();
@@ -100,7 +100,7 @@ start.onclick = () => {
     }
 };
 
-const stop = document.getElementById("btnStop");
+const stop = document.getElementById('btnStop');
 stop.onclick = () => {
     clearInterval(timer);
 };
@@ -119,25 +119,25 @@ function fillArray() {
 }
 
 function show(colors = true) {
-    let table = document.createElement("table");
+    let table = document.createElement('table');
 
     for (let i = 0; i < x; i++) {
-        let row = document.createElement("tr");
+        let row = document.createElement('tr');
         for (let j = 0; j < y; j++) {
-            let cell = document.createElement("td");
+            let cell = document.createElement('td');
             cell.innerText = grid[i][j].status;
             if (colors) {
                 grid[i][j].status === 0
-                    ? cell.classList.add("red")
-                    : cell.classList.add("green");
+                    ? cell.classList.add('red')
+                    : cell.classList.add('green');
             }
             row.appendChild(cell);
         }
         table.appendChild(row);
     }
 
-    const section = document.getElementById("grid");
-    section.innerHTML = "";
+    const section = document.getElementById('grid');
+    section.innerHTML = '';
     section.appendChild(table);
 }
 
@@ -148,17 +148,17 @@ function nextGen() {
         let row = [];
         for (let j = 0; j < y; j++) {
             let cell = grid[i][j];
-            let aliveNeight = checkNeighboors(cell);
+            let aliveNeighbors = checkNeighbors(cell);
 
             if (cell.status === 0) {
-                if (aliveNeight === 3 || aliveNeight === 6) {
+                if (aliveNeighbors === 3 || aliveNeighbors === 6) {
                     row.push(new Cell(1, i, j, x, y));
                 } else row.push(new Cell(0, i, j, x, y));
             } else if (cell.status === 1) {
                 if (
-                    aliveNeight === 2 ||
-                    aliveNeight === 3 ||
-                    aliveNeight === 6
+                    aliveNeighbors === 2 ||
+                    aliveNeighbors === 3 ||
+                    aliveNeighbors === 6
                 ) {
                     row.push(new Cell(1, i, j, x, y));
                 } else row.push(new Cell(0, i, j, x, y));
@@ -171,12 +171,12 @@ function nextGen() {
     show();
 }
 
-function checkNeighboors(cell) {
-    let neightArr = cell.neightCoord;
+function checkNeighbors(cell) {
+    let neighborsArr = cell.neighborsCoord;
     let count = 0;
 
-    for (let i = 0; i < neightArr.length; i++) {
-        let { 0: x, 1: y } = neightArr[i];
+    for (let i = 0; i < neighborsArr.length; i++) {
+        let { 0: x, 1: y } = neighborsArr[i];
         let cell = grid[x][y];
 
         if (cell.status === 1) {

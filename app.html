@@ -1,32 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Green vs Red</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Green vs Red</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-    <main>
-        <h1>Green vs. Red</h1>
-        <section>
-            <form>
-            <label for="width">Width: </label>
-            <input type="number" name="width" id="width" min="3" max="21">
-            <label for="height">Height: </label>
-            <input type="number" name="height" id="height" min="3" max="21">
-            <button id="btnStart" type="button">Start</button>
-            <button id="btnStop" type="button">Stop</button>
-            </form>
-        </section>
-        <section id="grid">
-            
-        </section>
-    </main>
-    <script src="index.js"></script>
-</body>
-
+    <body>
+        <main>
+            <h1>Green vs. Red</h1>
+            <section>
+                <form>
+                    <label for="width">Width: </label>
+                    <input
+                        type="number"
+                        name="width"
+                        id="width"
+                        min="3"
+                        max="21"
+                    />
+                    <label for="height">Height: </label>
+                    <input
+                        type="number"
+                        name="height"
+                        id="height"
+                        min="3"
+                        max="21"
+                    />
+                    <button id="btnStart" type="button">Start</button>
+                    <button id="btnStop" type="button">Stop</button>
+                </form>
+            </section>
+            <section id="grid"></section>
+        </main>
+        <script src="index.js"></script>
+    </body>
 </html>
