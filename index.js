@@ -86,6 +86,7 @@ class Cell {
 }
 
 let timer;
+let gen = 0;
 
 const start = document.getElementById('btnStart');
 start.onclick = () => {
@@ -94,8 +95,11 @@ start.onclick = () => {
 
     if (x >= 3 && x <= 21 && y >= 3 && y <= 21) {
         fillArray();
+        showGen();
         timer = setInterval(() => {
             nextGen();
+            gen++;
+            showGen();
         }, 1000);
     }
 };
@@ -185,4 +189,9 @@ function checkNeighbors(cell) {
     }
 
     return count;
+}
+
+function showGen() {
+    let genTitle = document.getElementById('gen');
+    genTitle.innerText = `Generation - ${gen}`;
 }
