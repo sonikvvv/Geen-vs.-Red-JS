@@ -1,10 +1,24 @@
 let x = 5;
 let y = 5;
+let timer;
+let gen = 0;
 let grid = [];
 const type = ['CTL', 'CTR', 'CBL', 'CBR', 'SL', 'SR', 'SB', 'ST', 'INSIDE'];
 const coordinates = ['--', '-0', '-+', '0-', '0+', '+-', '+0', '++'];
 
+/**
+ * Cell class. Containing methods for encode and decode neighbor
+ * coordinates determined by the cell type.
+ */
 class Cell {
+    /**
+     * Constructor for Cell class. Creates object of type Cell.
+     * @param {Number} status 0 - dead, 1 - alive
+     * @param {Number} x X coordinates.
+     * @param {Number} y Y coordinates.
+     * @param {Number} gridMaxX Maximum width of the grid.
+     * @param {Number} gridMaxY Maximum height of the grid.
+     */
     constructor(status, x, y, gridMaxX, gridMaxY) {
         this.status = status;
         this.row = x;
@@ -13,6 +27,13 @@ class Cell {
         this.neighborsCoord = this.neighbors();
     }
 
+    /**
+     * Function to determine the type of the cell and codes for all cell neighbors.
+     * Encoding all possible neighbors to indexes of the array: coordinates.
+     *
+     * @param {Number} gridMX Maximum width of the grid.
+     * @param {Number} gridMY Maximum height of the grid.
+     */
     setType(gridMX, gridMY) {
         const ctl = '467';
         const ctr = '356';
@@ -49,6 +70,11 @@ class Cell {
         }
     }
 
+    /**
+     * Function using neighborsCode to decode all possible neighbors coordinates.
+     * Using neighborsCode containing indexes of coordinates array.
+     * @returns Array with all possible neighbors coordinates.
+     */
     neighbors() {
         let neighborsCoord = [];
 
@@ -68,6 +94,11 @@ class Cell {
         return neighborsCoord;
     }
 
+    /**
+     * Function to decode the encoded neighbor coordinates.
+     * @param {String} code Code for decoding to neighbor coordinates.
+     * @returns Array of decoded neighbor coordinates.
+     */
     coordinatesDecode(code) {
         let forX = this.row;
         let forY = this.col;
@@ -85,30 +116,9 @@ class Cell {
     }
 }
 
-let timer;
-let gen = 0;
-
-const start = document.getElementById('btnStart');
-start.onclick = () => {
-    y = document.getElementById('width').value;
-    x = document.getElementById('height').value;
-
-    if (x >= 3 && x <= 21 && y >= 3 && y <= 21) {
-        fillArray();
-        showGen();
-        timer = setInterval(() => {
-            nextGen();
-            gen++;
-            showGen();
-        }, 1000);
-    }
-};
-
-const stop = document.getElementById('btnStop');
-stop.onclick = () => {
-    clearInterval(timer);
-};
-
+/**
+ * Function to random generate the contents of the array/grid.
+ */
 function fillArray() {
     grid = [];
     for (let i = 0; i < x; i++) {
@@ -122,6 +132,10 @@ function fillArray() {
     show();
 }
 
+/**
+ * Function to show the array on the display.
+ * @param {Boolean} colors True to show colors, false to not show colors.
+ */
 function show(colors = true) {
     let table = document.createElement('table');
 
@@ -145,6 +159,13 @@ function show(colors = true) {
     section.appendChild(table);
 }
 
+/**
+ * Function to create the next generation. Determines the cell status, by the alive neighbors.
+ * If the cell is dead (status is 0) and has 3 or 6 alive neighbors, then becomes alive (status is 1).
+ * Else stays dead (status is 0).
+ * If the cell is alive (status is 1) and has 2, 3 or 6 alive neighbors, then stays alive (status is 1).
+ * Else becomes dead (status is 0).
+ */
 function nextGen() {
     let newGrid = [];
 
@@ -175,6 +196,11 @@ function nextGen() {
     show();
 }
 
+/**
+ * Function to check alive neighbors, for specific cell.
+ * @param {Cell} cell The cell to check neighbors.
+ * @returns {Number} The number of alive neighbors.
+ */
 function checkNeighbors(cell) {
     let neighborsArr = cell.neighborsCoord;
     let count = 0;
@@ -191,7 +217,32 @@ function checkNeighbors(cell) {
     return count;
 }
 
+/**
+ * Function to show the generation number.
+ */
 function showGen() {
     let genTitle = document.getElementById('gen');
     genTitle.innerText = `Generation - ${gen}`;
 }
+
+// Assigning event listeners to Start and Stop buttons.
+const start = document.getElementById('btnStart');
+start.onclick = () => {
+    y = document.getElementById('width').value;
+    x = document.getElementById('height').value;
+
+    if (x >= 3 && x <= 21 && y >= 3 && y <= 21) {
+        fillArray();
+        showGen();
+        timer = setInterval(() => {
+            nextGen();
+            gen++;
+            showGen();
+        }, 1000);
+    }
+};
+
+const stop = document.getElementById('btnStop');
+stop.onclick = () => {
+    clearInterval(timer);
+};
